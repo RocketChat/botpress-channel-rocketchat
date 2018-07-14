@@ -22,6 +22,27 @@ class RocketChat {
     })
   }
 
+  receiveText(bp) {
+    driver.respondToMessages(async function (err, message, meta) {
+      console.log('I RECEIVE A MESSAGE:')
+      console.log(message)
+      bp.middlewares.sendIncoming({
+        platform: 'rocketchat',
+        type: 'action',
+        text: message.msg,
+        user: message.u.username,
+        channel: message.rid,
+        action: '',
+        action_type: '',
+        callback_id: '',
+        ts: message.ts.$date,
+        action_ts: '',
+        direct: false,
+        raw: message
+      }) 
+    })
+  }
+
   isConnected() {
     return this.connected
   }

@@ -52,5 +52,6 @@ module.exports = {
     await rocketchat.connect(bp)
     // simple message sent to test rocketchat connection
     rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
+    rocketchat.receiveText(bp)
   }
 }
