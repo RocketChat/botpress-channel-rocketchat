@@ -23,23 +23,21 @@ class RocketChat {
   }
 
   receiveText(bp) {
+    console.log("RECEIVE TEXT")
     driver.respondToMessages(async function (err, message, meta) {
       console.log('I RECEIVE A MESSAGE:')
       console.log(message)
+      driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
       bp.middlewares.sendIncoming({
         platform: 'rocketchat',
-        type: 'action',
+        type: 'message',
         text: message.msg,
         user: message.u.username,
         channel: message.rid,
-        action: '',
-        action_type: '',
-        callback_id: '',
         ts: message.ts.$date,
-        action_ts: '',
         direct: false,
         raw: message
-      }) 
+      })
     })
   }
 
@@ -54,8 +52,8 @@ class RocketChat {
   async connect(bp) {
     try {
       // make the connection with RocketChat
-      await driver.connect({ host: 'localhost:3002', useSsl: false})
-      await driver.login({ username: 'botpress', password: 'botpress'})
+      await driver.connect({ host: 'localhost:3002', useSsl: false })
+      await driver.login({ username: 'botpress', password: 'botpress' })
       await driver.joinRooms(['GENERAL'])
       await driver.subscribeToMessages()
     } catch (error) {

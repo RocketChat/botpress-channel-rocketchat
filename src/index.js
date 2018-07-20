@@ -29,7 +29,9 @@ module.exports = {
       name: 'rocketchat.sendMessages',
       type: 'outgoing',
       order: 100,
-      handler: outgoingMiddleware
+      handler: outgoingMiddleware,
+      module: 'botpress-channel-rocketchat',
+      description: 'Sends messages to Rocket.Chat'
   })
 
   bp.rocketchat = {}
