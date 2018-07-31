@@ -17,17 +17,18 @@ class RocketChat {
 
     return Promise.fromCallback(cb => {
       // simple messages sent to test RocketChat connection
-      driver.sendToRoomId('BOTPRESSSS!', 'GENERAL', {})
-      driver.sendToRoomId(text, channelId, {})
+      //driver.sendToRoomId('BOTPRESSSS!', 'GENERAL', {})
+      driver.sendToRoomId(text, channelId, options)
     })
   }
 
   receiveText(bp) {
     console.log("RECEIVE TEXT")
+    //console.log(bp)
     driver.respondToMessages(async function (err, message, meta) {
-      console.log('I RECEIVE A MESSAGE:')
-      console.log(message)
-      driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
+      //console.log('I RECEIVE A MESSAGE:')
+      //console.log(message)
+      //driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
       bp.middlewares.sendIncoming({
         platform: 'rocketchat',
         type: 'message',

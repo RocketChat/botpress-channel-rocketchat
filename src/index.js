@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-
+//import outgoing from './outgoing'
 import actions from './actions'
 import RocketChat from './rocketchat'
 import UMM from './umm'
@@ -11,16 +11,15 @@ const outgoingMiddleware = (event, next) => {
   if (event.platform !== 'rocketchat') {
     return next()
   }
-
-  if (!outgoing[event.type]) {
-    return next('Unsupported event type: ' + event.type)
-  }
-
-  outgoing[event.type](event, next, rocketchat)
+  // if (!outgoing[event.type]) {
+  //   return next('Unsupported event type: ' + event.type)
+  // }
+  //outgoing[event.type](event, next, rocketchat)
+  rocketchat.sendText(event.raw.channelId, event.text, event.raw.options)
+  return next()
 }
 
 module.exports = {
-
   config: {
   },
 
@@ -53,7 +52,8 @@ module.exports = {
 
     await rocketchat.connect(bp)
     // simple message sent to test rocketchat connection
-    rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
-    rocketchat.receiveText(bp)
+    //rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
+    await rocketchat.receiveText(bp)
+    UMM(bp)
   }
 }
