@@ -1,5 +1,3 @@
-const { driver } = require('@rocket.chat/sdk');
-
 module.exports = (bp, rocketchat) => {
   // const isButtonAction = payload => {
   //   return payload.message_ts ? true : false
@@ -82,45 +80,21 @@ module.exports = (bp, rocketchat) => {
     return false
   }
 
-  // const router = bp.getRouter('botpress-slack', { auth: req => !/\/action-endpoint/i.test(req.originalUrl) })
-  // Change router for driver
-  router.post('/action-endpoint', (req, res) => {
-    const payload = JSON.parse(req.body.payload)
-
-    if (!slack.isConnected()) {
-      throw new Error('You are not connected and authenticated')
-    }
-
-    if (payload.token !== slack.config.verificationToken) {
-      throw new Error('Verification token are not matching')
-    }
-
-    preprocessEvent(payload).then(user => {
-      // Check if this is a button or a menu action
-      let action_type = 'button'
-      let action_text = ' clicked on a button'
-      if (payload.actions[0].selected_options) {
-        action_type = 'menu'
-        action_text = ' selected a menu option'
-      }
-
-      bp.middlewares.sendIncoming({
-        platform: 'rocketchat',
-        type: 'action',
-        text: user.profile.real_name + action_text,
-        user: user,
-        channel: payload.channel,
-        action: payload.actions[0],
-        action_type: action_type,
-        callback_id: payload.callback_id,
-        ts: payload.message_ts,
-        action_ts: payload.action_ts,
-        direct: isDirect(payload.channel.id),
-        raw: payload
-      })
-    })
-
-    res.status(200).end()
-  })
+  // preprocessEvent(payload).then(user => {
+  //   bp.middlewares.sendIncoming({
+  //     platform: 'rocketchat',
+  //     type: 'action',
+  //     text: user.profile.real_name + action_text,
+  //     user: user,
+  //     channel: payload.channel,
+  //     action: payload.actions[0],
+  //     action_type: action_type,
+  //     callback_id: payload.callback_id,
+  //     ts: payload.message_ts,
+  //     action_ts: payload.action_ts,
+  //     direct: isDirect(payload.channel.id),
+  //     raw: payload
+  //   })
+  // })
 
 }

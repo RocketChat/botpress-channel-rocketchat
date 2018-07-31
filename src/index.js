@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import incoming from '.incoming'
+import incoming from './incoming'
 import actions from './actions'
 import outgoing from './outgoing'
 import RocketChat from './rocketchat'
