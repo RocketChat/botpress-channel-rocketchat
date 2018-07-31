@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-
+import incoming from '.incoming'
 import actions from './actions'
 import outgoing from './outgoing'
 import RocketChat from './rocketchat'
@@ -17,9 +17,8 @@ const outgoingMiddleware = (event, next) => {
     return next('Unsupported event type: ' + event.type)
   }
 
-  //outgoing[event.type](event, next, rocketchat)
-  rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
-  
+  outgoing[event.type](event, next, rocketchat)
+  //rocketchat.sendText(event.raw.channelId, event.text, event.raw.options)
 }
 
 module.exports = {
@@ -65,12 +64,10 @@ module.exports = {
     rocketchat = new RocketChat(bp, config)
     const setConfigAndRestart = async newConfigs => {
       await configurator.saveAll(newConfigs)
-      rocketchat.setConfig(newConfigs)
-      rocketchat.connect(bp)
+      await rocketchat.setConfig(newConfigs)
+      await rocketchat.connect(bp)
     }
     const conn = await rocketchat.connect(bp)
-    // simple message sent to test rocketchat connection
-    // rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
-    rocketchat.listen(bp)
+    await rocketchat.listen(bp)
   }
 }

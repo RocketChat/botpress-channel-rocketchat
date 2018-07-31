@@ -18,16 +18,55 @@ class RocketChat {
   }
 
   sendText(channelId, text, options) {
-
     return Promise.fromCallback(cb => {
-      // simple messages sent to test RocketChat connection
-      //driver.sendToRoomId('BOTPRESSSS!', 'GENERAL', {})
+      driver.sendToRoomId(text, channelId, {})
+    })
+  }
+  sendUpdateText(ts, channelId, text, options) {
+    return Promise.fromCallback(cb => {
       driver.sendToRoomId(text, channelId, {})
     })
   }
 
+  sendDeleteTextOrAttachments(ts, channelId, options) {
+    return Promise.fromCallback(cb => {
+      //TODO
+      //driver.sendToRoomId(text, channelId, {})
+    })
+  }
+
+  sendAttachments(channelId, attachments, options) {
+    return Promise.fromCallback(cb => {
+      // TODO
+      //driver.sendToRoomId(text, channelId, {})
+    })
+  }
+
+  sendUpdateAttachments(ts, channelId, attachments, options) {
+    return Promise.fromCallback(cb => {
+      //TODO
+      //driver.sendToRoomId(text, channelId, {})
+    })
+  }
+
+  sendReaction(name, options) {
+    return Promise.fromCallback(cb => {
+      //TODO
+      //driver.sendToRoomId(text, channelId, {})
+    })
+  }
+
+  sendRemoveReaction(name, options) {
+    return Promise.fromCallback(cb => {
+      //TODO
+      //driver.sendToRoomId(text, channelId, {})
+    })
+  }
+  callMethod() {
+    //TODO
+  }
+  
   listen(bp) {
-    console.log("RECEIVE TEXT")
     bp.middlewares.sendIncoming({
       platform: 'rocketchat',
       type: 'message',
@@ -38,11 +77,6 @@ class RocketChat {
       direct: false,
       raw: message
     })
-    // driver.respondToMessages(async function (err, message, meta) {
-    //   console.log('I RECEIVE A MESSAGE:')
-    //   console.log(message)
-    //   driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
-    // })
   }
 
   isConnected() {
@@ -68,10 +102,7 @@ class RocketChat {
   async disconnect() {
     await driver.disconnect()
   }
-  
-  callMethod(){
-    //TODO
-  }
+
 }
 
 module.exports = RocketChat
