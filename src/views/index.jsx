@@ -18,10 +18,12 @@ export default class RocketChatModule extends React.Component {
 
     this.state = {
       loading: true,
-      hostName: '',
-      useSsl: '',
-      BotName: '',
-      Channel: '',
+      username: '',
+      botname: '',
+      password: '',
+      hostname: '',
+      useSsl: false,
+      subscribeTo: ['GENERAL']
     }
   }
 
@@ -34,10 +36,20 @@ export default class RocketChatModule extends React.Component {
   }
 
   handleSaveConfig = () => {
-    console.log(this.state.hostName)
-    console.log(this.state.useSsl)
-    console.log(this.state.BotName)
-    console.log(this.state.Channel)
+    this.setState({
+      username: this.state.username,
+      password: this.state.password,
+      hostname: this.state.hostname,
+      useSsl: this.state.useSsl,
+      name: this.state.botname,
+      subscribeTo: this.state.subscribeTo,
+      loading: false
+    })
+    setImmediate(() => {
+      this.setState({
+        hashState: this.getHashState()
+      })
+    })
   }
 
 
@@ -72,6 +84,10 @@ export default class RocketChatModule extends React.Component {
     type: 'text', ...props
   })
 
+  renderPasswordInput = (label, name, props = {}) => this.renderInput(label, name, {
+    type: 'password', ...props
+  })
+
   renderTextAreaInput = (label, name, props = {}) => {
     return this.renderInput(label, name, {
       componentClass: 'textarea',
@@ -92,15 +108,12 @@ export default class RocketChatModule extends React.Component {
     return (
       <div className={style.section}>
         {this.renderHeader('Rocket.Chat Configuration')}
-
         {this.renderTextInput('HostName', 'hostname')}
-
-        {this.renderTextInput('UseSsl', 'usessl')}
-
-        {this.renderTextInput('BotName', 'botname')}
-
-        {this.renderTextInput('Channel', 'channel')}
-
+        {this.renderTextInput('UseSsl', 'useSsl')}
+        {this.renderTextInput('Botname', 'botname')}
+        {this.renderTextInput('Username', 'username')}
+        {this.renderPasswordInput('Password', 'password')}
+        {this.renderTextInput('Subscribe to Channels', 'subscribeTo')}
         {this.renderSaveButton()}
       </div>
     )

@@ -2,10 +2,11 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 
 import actions from './actions'
+import outgoing from './outgoing'
 import RocketChat from './rocketchat'
 import UMM from './umm'
 
-let rocketchat = null
+var rocketchat = null
 
 const outgoingMiddleware = (event, next) => {
   if (event.platform !== 'rocketchat') {
@@ -16,12 +17,24 @@ const outgoingMiddleware = (event, next) => {
     return next('Unsupported event type: ' + event.type)
   }
 
-  outgoing[event.type](event, next, rocketchat)
+  //outgoing[event.type](event, next, rocketchat)
+  rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
+  
 }
 
 module.exports = {
 
   config: {
+    username: { type: 'string', default: '', env: 'ROCKETCHAT_USERNAME' },
+    password: { type: 'string', default: '', env: 'ROCKETCHAT_PASSWORD' },
+    hostname: { type: 'string', default: '', env: 'ROCKETCHAT_HOST' },
+    useSSL: { type: 'string', default: '', env: 'ROCKETCHAT_USESSL' },
+    subscribeTo: { type: 'string', default: '', env: 'ROCKETCHAT_SUBSCRIBETO' },
+    scope: {
+      type: 'string',
+      default: 'admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read',
+      env: 'ROCKETCHAT_SCOPE'
+    }
   },
 
   init(bp) {
@@ -50,10 +63,14 @@ module.exports = {
     const config = await configurator.loadAll()
 
     rocketchat = new RocketChat(bp, config)
-
-    await rocketchat.connect(bp)
+    const setConfigAndRestart = async newConfigs => {
+      await configurator.saveAll(newConfigs)
+      rocketchat.setConfig(newConfigs)
+      rocketchat.connect(bp)
+    }
+    const conn = await rocketchat.connect(bp)
     // simple message sent to test rocketchat connection
-    rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
-    rocketchat.receiveText(bp)
+    // rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
+    rocketchat.listen(bp)
   }
 }

@@ -12,33 +12,37 @@ class RocketChat {
     this.config = config
     this.connected = false
   }
+  
+  setConfig(config) {
+    this.config = config
+  }
 
   sendText(channelId, text, options) {
 
     return Promise.fromCallback(cb => {
       // simple messages sent to test RocketChat connection
-      driver.sendToRoomId('BOTPRESSSS!', 'GENERAL', {})
+      //driver.sendToRoomId('BOTPRESSSS!', 'GENERAL', {})
       driver.sendToRoomId(text, channelId, {})
     })
   }
 
-  receiveText(bp) {
+  listen(bp) {
     console.log("RECEIVE TEXT")
-    driver.respondToMessages(async function (err, message, meta) {
-      console.log('I RECEIVE A MESSAGE:')
-      console.log(message)
-      driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
-      bp.middlewares.sendIncoming({
-        platform: 'rocketchat',
-        type: 'message',
-        text: message.msg,
-        user: message.u.username,
-        channel: message.rid,
-        ts: message.ts.$date,
-        direct: false,
-        raw: message
-      })
+    bp.middlewares.sendIncoming({
+      platform: 'rocketchat',
+      type: 'message',
+      text: message.msg,
+      user: message.u.username,
+      channel: message.rid,
+      ts: message.ts.$date,
+      direct: false,
+      raw: message
     })
+    // driver.respondToMessages(async function (err, message, meta) {
+    //   console.log('I RECEIVE A MESSAGE:')
+    //   console.log(message)
+    //   driver.sendToRoomId("I receive the message: " + message.msg, message.rid)
+    // })
   }
 
   isConnected() {
@@ -52,9 +56,9 @@ class RocketChat {
   async connect(bp) {
     try {
       // make the connection with RocketChat
-      await driver.connect({ host: 'localhost:3002', useSsl: false })
-      await driver.login({ username: 'botpress', password: 'botpress' })
-      await driver.joinRooms(['GENERAL'])
+      await driver.connect({ host: this.config.hostname, useSsl: this.config.useSsl })
+      await driver.login({ username: this.config.username, password: this.config.password })
+      await driver.joinRooms(this.config.subscribeTo.split(','))
       await driver.subscribeToMessages()
     } catch (error) {
       console.log(error)
@@ -63,6 +67,10 @@ class RocketChat {
 
   async disconnect() {
     await driver.disconnect()
+  }
+  
+  callMethod(){
+    //TODO
   }
 }
 

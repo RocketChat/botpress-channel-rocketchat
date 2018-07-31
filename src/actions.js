@@ -141,6 +141,18 @@ const createRemoveReaction = (name, options = {}) => {
   })
 }
 
+const livechatTransfer = (name, options = {}) => {
+  return create({
+    platform: 'rocketchat',
+    type: 'livechat_transfer',
+    text: 'transfer livechat',
+    raw: {
+      name: name,
+      options: options
+    }
+  })
+}
+
 module.exports = {
   createText,
   createAttachments,
@@ -148,5 +160,6 @@ module.exports = {
   createUpdateText,
   createUpdateAttachments,
   createDeleteTextOrAttachments,
-  createRemoveReaction
+  createRemoveReaction,
+  livechatTransfer
 }

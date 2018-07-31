@@ -85,7 +85,7 @@ module.exports = bp => {
   const [umm, registerConnector] = _.at(bp, ['umm', 'umm.registerConnector'])
 
   umm && registerConnector && registerConnector({
-    platform: 'RocketChat',
+    platform: 'rocketchat',
     processOutgoing: args => processOutgoing(Object.assign({}, args, { bp })),
     templates: []
   })
