@@ -66,7 +66,9 @@ class RocketChat {
     //TODO
   }
   
-  listen(bp) {
+listen(bp) {
+  console.log("RECEIVED TEXT")
+  driver.respondToMessages(async function (err, message, meta) {
     bp.middlewares.sendIncoming({
       platform: 'rocketchat',
       type: 'message',
@@ -77,7 +79,8 @@ class RocketChat {
       direct: false,
       raw: message
     })
-  }
+  })
+}
 
   isConnected() {
     return this.connected
