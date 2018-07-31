@@ -1,26 +1,38 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-//import outgoing from './outgoing'
+import incoming from './incoming'
 import actions from './actions'
+import outgoing from './outgoing'
 import RocketChat from './rocketchat'
 import UMM from './umm'
 
-let rocketchat = null
+var rocketchat = null
 
 const outgoingMiddleware = (event, next) => {
   if (event.platform !== 'rocketchat') {
     return next()
   }
-  // if (!outgoing[event.type]) {
-  //   return next('Unsupported event type: ' + event.type)
-  // }
-  //outgoing[event.type](event, next, rocketchat)
-  rocketchat.sendText(event.raw.channelId, event.text, event.raw.options)
-  return next()
+
+  if (!outgoing[event.type]) {
+    return next('Unsupported event type: ' + event.type)
+  }
+
+  outgoing[event.type](event, next, rocketchat)
+  //rocketchat.sendText(event.raw.channelId, event.text, event.raw.options)
 }
 
 module.exports = {
   config: {
+    username: { type: 'string', default: '', env: 'ROCKETCHAT_USERNAME' },
+    password: { type: 'string', default: '', env: 'ROCKETCHAT_PASSWORD' },
+    hostname: { type: 'string', default: '', env: 'ROCKETCHAT_HOST' },
+    useSSL: { type: 'string', default: '', env: 'ROCKETCHAT_USESSL' },
+    subscribeTo: { type: 'string', default: '', env: 'ROCKETCHAT_SUBSCRIBETO' },
+    scope: {
+      type: 'string',
+      default: 'admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read',
+      env: 'ROCKETCHAT_SCOPE'
+    }
   },
 
   init(bp) {
@@ -49,11 +61,12 @@ module.exports = {
     const config = await configurator.loadAll()
 
     rocketchat = new RocketChat(bp, config)
-
-    await rocketchat.connect(bp)
-    // simple message sent to test rocketchat connection
-    //rocketchat.sendText('GENERAL', 'message sent from botpress.', {})
-    await rocketchat.receiveText(bp)
-    UMM(bp)
+    const setConfigAndRestart = async newConfigs => {
+      await configurator.saveAll(newConfigs)
+      await rocketchat.setConfig(newConfigs)
+      await rocketchat.connect(bp)
+    }
+    const conn = await rocketchat.connect(bp)
+    await rocketchat.listen(bp)
   }
 }
