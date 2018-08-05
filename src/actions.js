@@ -39,9 +39,8 @@ const validateAttachments = (attachments) => {
 }
 
 const createText = (channelId, text, options = {}) => {
-  validateChannelId(channelId)
+  //validateChannelId(channelId)
   validateText(text)
-
   return create({
     platform: 'rocketchat',
     type: 'text',

@@ -8,7 +8,7 @@ import UMM from './umm'
 
 var rocketchat = null
 
-const outgoingMiddleware = (event, next) => {
+const outgoingMiddleware = async (event, next) => {
   if (event.platform !== 'rocketchat') {
     return next()
   }
@@ -16,9 +16,7 @@ const outgoingMiddleware = (event, next) => {
   if (!outgoing[event.type]) {
     return next('Unsupported event type: ' + event.type)
   }
-
-  outgoing[event.type](event, next, rocketchat)
-  //rocketchat.sendText(event.raw.channelId, event.text, event.raw.options)
+  await outgoing[event.type](event, next, rocketchat)
 }
 
 module.exports = {
@@ -67,6 +65,6 @@ module.exports = {
       await rocketchat.connect(bp)
     }
     const conn = await rocketchat.connect(bp)
-    await rocketchat.listen(bp)
+    return rocketchat.listen(bp)
   }
 }

@@ -18,9 +18,7 @@ class RocketChat {
   }
 
   sendText(channelId, text, options) {
-    return Promise.fromCallback(cb => {
-      driver.sendToRoomId(text, channelId, {})
-    })
+    return driver.sendToRoomId(text, channelId)    
   }
   sendUpdateText(ts, channelId, text, options) {
     return Promise.fromCallback(cb => {
@@ -66,10 +64,10 @@ class RocketChat {
     //TODO
   }
   
-listen(bp) {
-  console.log("RECEIVED TEXT")
-  driver.respondToMessages(async function (err, message, meta) {
-    bp.middlewares.sendIncoming({
+async listen(bp) {
+  console.log("LISTEN TRIGGERED")
+  return driver.respondToMessages(async function (err, message, meta) {
+    await bp.middlewares.sendIncoming({
       platform: 'rocketchat',
       type: 'message',
       text: message.msg,
@@ -77,8 +75,10 @@ listen(bp) {
       channel: message.rid,
       ts: message.ts.$date,
       direct: false,
+      roomType: meta.roomType,
       raw: message
     })
+    
   })
 }
 
