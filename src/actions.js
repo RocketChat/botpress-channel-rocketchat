@@ -20,10 +20,8 @@ const create = obj => {
   return newEvent
 }
 
+// TODO
 const validateChannelId = (channelId) => {
-  if (!/\w+/.test(channelId)) {
-    throw new Error('Invalid channel id')
-  }
 }
 
 const validateText = (text) => {
@@ -39,7 +37,7 @@ const validateAttachments = (attachments) => {
 }
 
 const createText = (channelId, text, options = {}) => {
-  //validateChannelId(channelId)
+  validateChannelId(channelId)
   validateText(text)
   return create({    
     platform: 'rocketchat',
@@ -80,66 +78,71 @@ const createReaction = (name, options = {}) => {
   })
 }
 
+// TODO
 const createUpdateText = (ts, channelId, text, options = {}) => {
   validateChannelId(channelId)
   validateText(text)
 
-  return create({
-    platform: 'rocketchat',
-    type: 'update_text',
-    text: text,
-    raw: {
-      channelId: channelId,
-      ts: ts,
-      options: options
-    }
-  })
+  // return create({
+  //   platform: 'rocketchat',
+  //   type: 'update_text',
+  //   text: text,
+  //   raw: {
+  //     channelId: channelId,
+  //     ts: ts,
+  //     options: options
+  //   }
+  // })
 } 
 
+// TODO
 const createUpdateAttachments = (ts, channelId, attachments, options = {}) => {
   validateChannelId(channelId)
   validateAttachments(attachments)
 
-  return create({
-    platform: 'rocketchat',
-    type: 'update_attachments',
-    text: 'App updated an attachments',
-    raw: {
-      channelId: channelId,
-      attachments: attachments,
-      ts: ts,
-      options: options
-    }
-  })
+  // return create({
+  //   platform: 'rocketchat',
+  //   type: 'update_attachments',
+  //   text: 'App updated an attachments',
+  //   raw: {
+  //     channelId: channelId,
+  //     attachments: attachments,
+  //     ts: ts,
+  //     options: options
+  //   }
+  // })
 }
 
+// TODO
 const createDeleteTextOrAttachments = (ts, channelId, options = {}) => {
   validateChannelId(channelId)
 
-  return create({
-    platform: 'rocketchat',
-    type: 'delete_text_or_attachments',
-    text: 'App deleted a text or an attachments',
-    raw: {
-      channelId: channelId,
-      ts: ts,
-      options: options
-    }
-  })
+  // return create({
+  //   platform: 'rocketchat',
+  //   type: 'delete_text_or_attachments',
+  //   text: 'App deleted a text or an attachments',
+  //   raw: {
+  //     channelId: channelId,
+  //     ts: ts,
+  //     options: options
+  //   }
+  // })
 }
 
+// TODO
 const createRemoveReaction = (name, options = {}) => {
-  return create({
-    platform: 'rocketchat',
-    type: 'remove_reaction',
-    text: 'App remove a reaction',
-    raw: {
-      name: name,
-      options: options
-    }
-  })
+  // return create({
+  //   platform: 'rocketchat',
+  //   type: 'remove_reaction',
+  //   text: 'App remove a reaction',
+  //   raw: {
+  //     name: name,
+  //     options: options
+  //   }
+  // })
 }
 
+// TODO
 const livechatTransfer = (name, options = {}) => {
   return create({
     platform: 'rocketchat',

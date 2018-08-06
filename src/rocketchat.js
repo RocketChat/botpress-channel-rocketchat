@@ -29,35 +29,30 @@ class RocketChat {
   sendDeleteTextOrAttachments(ts, channelId, options) {
     return Promise.fromCallback(cb => {
       //TODO
-      //driver.sendToRoomId(text, channelId, {})
     })
   }
 
   sendAttachments(channelId, attachments, options) {
     return Promise.fromCallback(cb => {
       // TODO
-      //driver.sendToRoomId(text, channelId, {})
     })
   }
 
   sendUpdateAttachments(ts, channelId, attachments, options) {
     return Promise.fromCallback(cb => {
       //TODO
-      //driver.sendToRoomId(text, channelId, {})
     })
   }
 
   sendReaction(name, options) {
     return Promise.fromCallback(cb => {
       //TODO
-      //driver.sendToRoomId(text, channelId, {})
     })
   }
 
   sendRemoveReaction(name, options) {
     return Promise.fromCallback(cb => {
       //TODO
-      //driver.sendToRoomId(text, channelId, {})
     })
   }
   callMethod() {
@@ -86,10 +81,6 @@ async listen(bp) {
     return this.connected
   }
 
-  getData() {
-    return this.data
-  }
-
   async connect(bp) {
     try {
       // make the connection with RocketChat
@@ -97,6 +88,7 @@ async listen(bp) {
       await driver.login({ username: this.config.username, password: this.config.password })
       await driver.joinRooms(this.config.subscribeTo.split(','))
       await driver.subscribeToMessages()
+      this.connected = true
     } catch (error) {
       console.log(error)
     }
