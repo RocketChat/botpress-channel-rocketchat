@@ -4,13 +4,7 @@ import _ from 'lodash'
 import actions from './actions'
 
 function getChannelId(event) {
-  const channelId = _.get(event, 'channel.id')
-    || _.get(event, 'user.channelId')
-    || _.get(event, 'channelId')
-    || _.get(event, 'raw.channelId')
-    || _.get(event, 'raw.channel.id')
-    || _.get(event, 'raw.channel')
-
+  const channelId = event.channel
   if (!channelId) {
     throw new Error('Could not find channelId in the incoming event.')
   }
