@@ -51,7 +51,7 @@ function processOutgoing({ event, blocName, instruction }) {
   }
 
   if (!_.isNil(instruction.text)) {
-    return actions.createText(getChannelId(event), instruction.text, instruction.options)
+    return actions.createText(getChannelId(event), instruction.text, event)
   }
 
   if (!_.isNil(instruction.reaction)) {
