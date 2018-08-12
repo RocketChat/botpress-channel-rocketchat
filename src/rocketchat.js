@@ -30,16 +30,30 @@ class RocketChat {
     }
   }
 
+
+
   async listen(bp) {
-    console.log("LISTEN TRIGGERED")
-    return driver.respondToMessages(async function (err, message, meta) {
-      await bp.middlewares.sendIncoming({
-        platform: 'rocketchat',
-        type: 'message',
-        text: message.msg,
-        user: {
-          id: message.u._id,
-          userId: message.u._id,
+    async function getOrCreateUser(message) {
+      //console.log('GETORCREATEUSER')
+      const userId = message.u._id
+      //console.log(userId)
+      const id = `rocketchat:${userId}`
+      // console.log("ID:")
+      // console.log(id)
+      const existingUser = await bp.db
+        .get()
+        .then(knex => knex('users').where('id', id))
+        .then(users => users[0])
+  
+      // console.log("EXISTINGUSER")
+      // console.log(existingUser)
+      if (existingUser) {
+        existingUser.id = userId
+        return existingUser
+      } else {
+        const newUser = {
+          id: id,
+          userId: userId,
           username: message.u.username,
           platform: 'rocketchat',
           first_name: message.u.name,
@@ -48,8 +62,26 @@ class RocketChat {
           timezone: null,
           picture_url: null,
           locale: null,
-          created_on: ''
-        },
+          created_on: '',
+          number: userId
+        }
+        // console.log("NEWUSER")
+        // console.log(newUser)
+        await bp.db.saveUser(newUser)
+        return newUser
+      }
+    }
+    console.log("LISTEN TRIGGERED")    
+    return driver.respondToMessages(async function (err, message, meta) {
+      // console.log("MESSAGE:")
+      // console.log(message)
+      const user = await getOrCreateUser(message)
+      // console.log(user)
+      await bp.middlewares.sendIncoming({
+        platform: 'rocketchat',
+        type: 'message',
+        text: message.msg,
+        user: user,
         channel: message.rid,
         ts: message.ts.$date,
         direct: false,
@@ -63,10 +95,10 @@ class RocketChat {
     this.config = config
   }
 
-  sendText(channelId, text, options) {
-    console.log("OPTIONS:")
-    //console.log(options)
-    let messageType = options.raw.options.roomType
+  sendText(text, options, event) {
+    let messageType = event.raw.options.roomType
+    let channelId = event.raw.channelId
+    let username = event.raw.options.user.username
     if (messageType !== undefined) {
       if (messageType == 'c') {
         console.log("CHANNEL")
@@ -76,7 +108,7 @@ class RocketChat {
         return driver.sendToRoomId(text, channelId);
       } else if (messageType == 'd') {
         console.log("DIRECT")
-        return driver.sendDirectToUser(text, options.raw.options.user.username);
+        return driver.sendDirectToUser(text, username);
       } else if (messageType == 'l') {
         console.log("LIVECHAT")
         return driver.sendToRoomId(text, channelId);
@@ -86,8 +118,8 @@ class RocketChat {
     } else {
       console.log("MESSAGE TYPE UNDEFINED")
     }
-
   }
+
   sendUpdateText(ts, channelId, text, options) {
     return Promise.fromCallback(cb => {
       driver.sendToRoomId(text, channelId, {})

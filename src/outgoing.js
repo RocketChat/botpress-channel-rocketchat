@@ -18,12 +18,11 @@ const handleText = (event, next, rocketchat) => {
   if (event.platform !== 'rocketchat' || event.type !== 'text') {
     return next()
   }
-  console.log("HANDLE TEXT")
-  const channelId = event.raw.channelId
+  //console.log("HANDLE TEXT")
   const text = event.text
-  const options = event
+  const options = {}
   
-  return handlePromise(event, next, rocketchat.sendText(channelId, text, options))
+  return handlePromise(event, next, rocketchat.sendText(text, options, event))
 }
 
 const handleUpdateText = (event, next, rocketchat) => {
