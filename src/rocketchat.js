@@ -16,7 +16,11 @@ class RocketChat {
   async connect(bp) {
     try {
       // make the connection with RocketChat
-      await driver.connect({ host: this.config.hostname, useSsl: this.config.useSsl })
+      var useSSL = true
+      if (this.config.useSSL === "false") {
+        var useSSL = false
+      }
+      await driver.connect({ host: this.config.hostname, useSsl: useSSL })
       await driver.login({ username: this.config.username, password: this.config.password })
       await driver.joinRooms(this.config.subscribeTo.split(','))
       await driver.subscribeToMessages()
@@ -33,7 +37,19 @@ class RocketChat {
         platform: 'rocketchat',
         type: 'message',
         text: message.msg,
-        user: message.u.username,
+        user: {
+          id: message.u._id,
+          userId: message.u._id,
+          username: message.u.username,
+          platform: 'rocketchat',
+          first_name: message.u.name,
+          last_name: '',
+          gender: '',
+          timezone: null,
+          picture_url: null,
+          locale: null,
+          created_on: ''
+        },
         channel: message.rid,
         ts: message.ts.$date,
         direct: false,
@@ -48,6 +64,8 @@ class RocketChat {
   }
 
   sendText(channelId, text, options) {
+    console.log("OPTIONS:")
+    //console.log(options)
     let messageType = options.raw.options.roomType
     if (messageType !== undefined) {
       if (messageType == 'c') {
@@ -58,7 +76,7 @@ class RocketChat {
         return driver.sendToRoomId(text, channelId);
       } else if (messageType == 'd') {
         console.log("DIRECT")
-        return driver.sendDirectToUser(text, options.raw.options.user);
+        return driver.sendDirectToUser(text, options.raw.options.user.username);
       } else if (messageType == 'l') {
         console.log("LIVECHAT")
         return driver.sendToRoomId(text, channelId);
