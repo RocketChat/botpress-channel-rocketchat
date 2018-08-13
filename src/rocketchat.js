@@ -34,7 +34,8 @@ class RocketChat {
 
   async listen(bp) {
     async function getOrCreateUser(message) {
-      //console.log('GETORCREATEUSER')
+      console.log('GETORCREATEUSER')
+      //console.log(message)
       const userId = message.u._id
       //console.log(userId)
       const id = `rocketchat:${userId}`
@@ -77,6 +78,11 @@ class RocketChat {
       // console.log(message)
       const user = await getOrCreateUser(message)
       // console.log(user)
+      var options = { 
+        dm: true,
+        livechat: true,
+        edited: true
+      } 
       await bp.middlewares.sendIncoming({
         platform: 'rocketchat',
         type: 'message',
@@ -88,7 +94,7 @@ class RocketChat {
         roomType: meta.roomType,
         raw: message
       })
-    }, { dm: true })
+    }, options)
   }
 
   setConfig(config) {

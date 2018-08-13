@@ -1,8 +1,1 @@
-{
-    "username": "botpress",
-    "password": "botpress",
-    "hostname": "http://localhost:3002",
-    "useSSL": "false",
-    "subscribeTo": "GENERAL",
-    "scope": ""
-}
+{}
