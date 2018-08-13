@@ -45,7 +45,7 @@ class RocketChat {
         .get()
         .then(knex => knex('users').where('id', id))
         .then(users => users[0])
-  
+
       // console.log("EXISTINGUSER")
       // console.log(existingUser)
       if (existingUser) {
@@ -72,17 +72,17 @@ class RocketChat {
         return newUser
       }
     }
-    console.log("LISTEN TRIGGERED")    
+    console.log("LISTEN TRIGGERED")
+    const options = {
+      dm: true,
+      livechat: true,
+      edited: true
+    }
     return driver.respondToMessages(async function (err, message, meta) {
       // console.log("MESSAGE:")
       // console.log(message)
       const user = await getOrCreateUser(message)
-      // console.log(user)
-      var options = { 
-        dm: true,
-        livechat: true,
-        edited: true
-      } 
+      // console.log(user)       
       await bp.middlewares.sendIncoming({
         platform: 'rocketchat',
         type: 'message',
