@@ -30,24 +30,16 @@ class RocketChat {
     }
   }
 
-
-
   async listen(bp) {
+    // Insert new user to db
     async function getOrCreateUser(message) {
       console.log('GETORCREATEUSER')
-      //console.log(message)
       const userId = message.u._id
-      //console.log(userId)
       const id = `rocketchat:${userId}`
-      // console.log("ID:")
-      // console.log(id)
       const existingUser = await bp.db
         .get()
         .then(knex => knex('users').where('id', id))
         .then(users => users[0])
-
-      // console.log("EXISTINGUSER")
-      // console.log(existingUser)
       if (existingUser) {
         existingUser.id = userId
         return existingUser
@@ -66,8 +58,6 @@ class RocketChat {
           created_on: '',
           number: userId
         }
-        // console.log("NEWUSER")
-        // console.log(newUser)
         await bp.db.saveUser(newUser)
         return newUser
       }
@@ -79,10 +69,7 @@ class RocketChat {
       edited: true
     }
     return driver.respondToMessages(async function (err, message, meta) {
-      // console.log("MESSAGE:")
-      // console.log(message)
-      const user = await getOrCreateUser(message)
-      // console.log(user)       
+      const user = await getOrCreateUser(message)    
       await bp.middlewares.sendIncoming({
         platform: 'rocketchat',
         type: 'message',
@@ -161,10 +148,7 @@ class RocketChat {
       //TODO
     })
   }
-  callMethod() {
-    //TODO
-  }
-
+  
   isConnected() {
     return this.connected
   }

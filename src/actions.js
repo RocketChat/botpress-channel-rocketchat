@@ -155,6 +155,10 @@ const livechatTransfer = (name, options = {}) => {
   })
 }
 
+const callMethod = (method, ...args) => {
+  return driver.callMethod(method, args)
+}
+
 module.exports = {
   createText,
   createAttachments,
@@ -163,5 +167,6 @@ module.exports = {
   createUpdateAttachments,
   createDeleteTextOrAttachments,
   createRemoveReaction,
-  livechatTransfer
+  livechatTransfer,
+  callMethod,
 }
