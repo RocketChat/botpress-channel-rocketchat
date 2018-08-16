@@ -9,7 +9,7 @@ const create = obj => {
   })
 
   const messageId = new Date().toISOString() + Math.random()
-  
+
   const newEvent = Object.assign({
     _promise: promise,
     _resolve: resolve,
@@ -25,13 +25,13 @@ const validateChannelId = (channelId) => {
 }
 
 const validateText = (text) => {
-  if (typeof(text) !== 'string') {
+  if (typeof (text) !== 'string') {
     throw new Error('Text must be a string.')
   }
 }
 
 const validateAttachments = (attachments) => {
-  if (typeof(attachments) !== 'object') {
+  if (typeof (attachments) !== 'object') {
     throw new Error('Expected attachments type to be an object')
   }
 }
@@ -39,7 +39,7 @@ const validateAttachments = (attachments) => {
 const createText = (channelId, text, options = {}) => {
   validateChannelId(channelId)
   validateText(text)
-  return create({    
+  return create({
     platform: 'rocketchat',
     type: 'text',
     text: text,
@@ -93,7 +93,7 @@ const createUpdateText = (ts, channelId, text, options = {}) => {
   //     options: options
   //   }
   // })
-} 
+}
 
 // TODO
 const createUpdateAttachments = (ts, channelId, attachments, options = {}) => {
@@ -116,30 +116,10 @@ const createUpdateAttachments = (ts, channelId, attachments, options = {}) => {
 // TODO
 const createDeleteTextOrAttachments = (ts, channelId, options = {}) => {
   validateChannelId(channelId)
-
-  // return create({
-  //   platform: 'rocketchat',
-  //   type: 'delete_text_or_attachments',
-  //   text: 'App deleted a text or an attachments',
-  //   raw: {
-  //     channelId: channelId,
-  //     ts: ts,
-  //     options: options
-  //   }
-  // })
 }
 
 // TODO
 const createRemoveReaction = (name, options = {}) => {
-  // return create({
-  //   platform: 'rocketchat',
-  //   type: 'remove_reaction',
-  //   text: 'App remove a reaction',
-  //   raw: {
-  //     name: name,
-  //     options: options
-  //   }
-  // })
 }
 
 // TODO

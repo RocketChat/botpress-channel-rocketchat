@@ -69,18 +69,21 @@ class RocketChat {
       edited: true
     }
     return driver.respondToMessages(async function (err, message, meta) {
-      const user = await getOrCreateUser(message)    
-      await bp.middlewares.sendIncoming({
-        platform: 'rocketchat',
-        type: 'message',
-        text: message.msg,
-        user: user,
-        channel: message.rid,
-        ts: message.ts.$date,
-        direct: false,
-        roomType: meta.roomType,
-        raw: message
-      })
+      // If message have .t so it's a system message, so ignore it
+      if (message.t === undefined) {        
+        const user = await getOrCreateUser(message)
+        await bp.middlewares.sendIncoming({
+          platform: 'rocketchat',
+          type: 'message',
+          text: message.msg,
+          user: user,
+          channel: message.rid,
+          ts: message.ts.$date,
+          direct: false,
+          roomType: meta.roomType,
+          raw: message
+        })
+      }
     }, options)
   }
 
@@ -148,7 +151,7 @@ class RocketChat {
       //TODO
     })
   }
-  
+
   isConnected() {
     return this.connected
   }
