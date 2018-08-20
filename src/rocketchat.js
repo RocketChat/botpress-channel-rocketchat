@@ -33,7 +33,7 @@ class RocketChat {
   async listen(bp) {
     // Insert new user to db
     async function getOrCreateUser(message) {
-      console.log('GETORCREATEUSER')
+      //console.log('GETORCREATEUSER')
       const userId = message.u._id
       const id = `rocketchat:${userId}`
       const existingUser = await bp.db
