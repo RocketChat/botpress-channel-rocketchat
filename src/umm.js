@@ -13,8 +13,7 @@ function getChannelId(event) {
 }
 
 function getMessageTs(event) {
-  const ts = _.get(event, 'ts')
-    || _.get(event, 'raw.ts')
+  const ts = _.get(event, 'ts') || _.get(event, 'raw.ts')
 
   if (!ts) {
     throw new Error('Could not find message timestamp (ts) in the incoming event.')
@@ -29,19 +28,17 @@ function processOutgoing({ event, blocName, instruction }) {
   ////////
   // PRE-PROCESSING
   ////////
-  
+
   const optionsList = []
 
-  const options = _.pick(instruction, optionsList)
-  
-  for (let prop of optionsList) {
+  for (const prop of optionsList) {
     delete ins[prop]
   }
 
   /////////
   /// Processing
   /////////
-  
+
   if (!_.isNil(instruction.attachments)) {
     return actions.createAttachments(getChannelId(event), instruction.attachments, instruction.options)
   }
@@ -55,16 +52,23 @@ function processOutgoing({ event, blocName, instruction }) {
   }
 
   if (!_.isNil(instruction.reaction)) {
-    return actions.createReaction(instruction.reaction, Object.assign({}, {
-      timestamp: getMessageTs(event),
-      channel: getChannelId(event)
-    }, instruction.options))
+    return actions.createReaction(
+      instruction.reaction,
+      Object.assign(
+        {},
+        {
+          timestamp: getMessageTs(event),
+          channel: getChannelId(event)
+        },
+        instruction.options
+      )
+    )
   }
 
   ////////////
   /// POST-PROCESSING
   ////////////
-  
+
   // Nothing to post-process yet
 
   ////////////
@@ -78,9 +82,11 @@ function processOutgoing({ event, blocName, instruction }) {
 module.exports = bp => {
   const [umm, registerConnector] = _.at(bp, ['umm', 'umm.registerConnector'])
 
-  umm && registerConnector && registerConnector({
-    platform: 'rocketchat',
-    processOutgoing: args => processOutgoing(Object.assign({}, args, { bp })),
-    templates: []
-  })
+  umm &&
+    registerConnector &&
+    registerConnector({
+      platform: 'rocketchat',
+      processOutgoing: args => processOutgoing(Object.assign({}, args, { bp })),
+      templates: []
+    })
 }

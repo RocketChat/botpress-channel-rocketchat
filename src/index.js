@@ -5,7 +5,7 @@ import outgoing from './outgoing'
 import RocketChat from './rocketchat'
 import UMM from './umm'
 
-var rocketchat = null
+let rocketchat = null
 
 const outgoingMiddleware = async (event, next) => {
   if (event.platform !== 'rocketchat') {
@@ -45,25 +45,20 @@ module.exports = {
     bp.rocketchat = {}
     _.forIn(actions, (action, name) => {
       bp.rocketchat[name] = actions[name]
-      let sendName = name.replace(/^create/, 'send')
-      bp.rocketchat[sendName] = Promise.method(function () {
-        var msg = action.apply(this, arguments)
+      const sendName = name.replace(/^create/, 'send')
+      bp.rocketchat[sendName] = Promise.method(function() {
+        const msg = action.apply(this, arguments)
         return bp.middlewares.sendOutgoing(msg)
       })
     })
     UMM(bp)
   },
 
-  ready: async function (bp, configurator) {
+  ready: async function(bp, configurator) {
     const config = await configurator.loadAll()
 
     rocketchat = new RocketChat(bp, config)
-    const setConfigAndRestart = async newConfigs => {
-      await configurator.saveAll(newConfigs)
-      await rocketchat.setConfig(newConfigs)
-      await rocketchat.connect(bp)
-    }
-    const conn = await rocketchat.connect(bp)
+    await rocketchat.connect(bp)
     return rocketchat.listen(bp)
   }
 }

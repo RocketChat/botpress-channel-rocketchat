@@ -1,10 +1,8 @@
-const { driver } = require('@rocket.chat/sdk');
+const { driver } = require('@rocket.chat/sdk')
 import Promise from 'bluebird'
-import _ from 'lodash'
 
 class RocketChat {
   constructor(bp, config) {
-
     if (!bp || !config) {
       throw new Error('You need to specify botpress and config')
     }
@@ -13,15 +11,11 @@ class RocketChat {
     this.connected = false
   }
 
-  async connect(bp) {
+  async connect() {
     try {
-      // make the connection with RocketChat
-      var useSSL = true
-      if (this.config.ROCKETCHAT_USE_SSL === "false") {
-        var useSSL = false
-      }
+      const useSSL = this.config.ROCKETCHAT_USE_SSL === 'true'
       await driver.connect({ host: this.config.ROCKETCHAT_URL, useSsl: useSSL })
-      await driver.login({ username: this.config.ROCKETCHAT_USER, password: this.config.ROCKETCHAT_PASSWORD})
+      await driver.login({ username: this.config.ROCKETCHAT_USER, password: this.config.ROCKETCHAT_PASSWORD })
       await driver.joinRooms(this.config.ROCKETCHAT_ROOM.split(','))
       await driver.subscribeToMessages()
       this.connected = true
@@ -62,15 +56,15 @@ class RocketChat {
         return newUser
       }
     }
-    console.log("LISTEN TRIGGERED")
+    console.log('LISTEN TRIGGERED')
     const options = {
       dm: true,
       livechat: true,
       edited: true
     }
-    return driver.respondToMessages(async function (err, message, meta) {
+    return driver.respondToMessages(async function(err, message, meta) {
       // If message have .t so it's a system message, so ignore it
-      if (message.t === undefined) {        
+      if (message.t === undefined) {
         const user = await getOrCreateUser(message)
         await bp.middlewares.sendIncoming({
           platform: 'rocketchat',
@@ -92,63 +86,33 @@ class RocketChat {
   }
 
   sendText(text, options, event) {
-    let messageType = event.raw.options.roomType
-    let channelId = event.raw.channelId
-    let username = event.raw.options.user.username
+    const messageType = event.raw.options.roomType
+    const channelId = event.raw.channelId
+    const username = event.raw.options.user.username
     if (messageType !== undefined) {
       if (messageType == 'c') {
-        console.log("CHANNEL")
-        return driver.sendToRoomId(text, channelId);
+        console.log('CHANNEL')
+        return driver.sendToRoomId(text, channelId)
       } else if (messageType == 'p') {
-        console.log("PRIVATE")
-        return driver.sendToRoomId(text, channelId);
+        console.log('PRIVATE')
+        return driver.sendToRoomId(text, channelId)
       } else if (messageType == 'd') {
-        console.log("DIRECT")
-        return driver.sendDirectToUser(text, username);
+        console.log('DIRECT')
+        return driver.sendDirectToUser(text, username)
       } else if (messageType == 'l') {
-        console.log("LIVECHAT")
-        return driver.sendToRoomId(text, channelId);
+        console.log('LIVECHAT')
+        return driver.sendToRoomId(text, channelId)
       } else {
-        console.log("ERROR WHILE SENDING MESSAGE")
+        console.log('ERROR WHILE SENDING MESSAGE')
       }
     } else {
-      console.log("MESSAGE TYPE UNDEFINED")
+      console.log('MESSAGE TYPE UNDEFINED')
     }
   }
 
-  sendUpdateText(ts, channelId, text, options) {
-    return Promise.fromCallback(cb => {
+  sendUpdateText(ts, channelId, text) {
+    return Promise.fromCallback(() => {
       driver.sendToRoomId(text, channelId, {})
-    })
-  }
-
-  sendDeleteTextOrAttachments(ts, channelId, options) {
-    return Promise.fromCallback(cb => {
-      //TODO
-    })
-  }
-
-  sendAttachments(channelId, attachments, options) {
-    return Promise.fromCallback(cb => {
-      // TODO
-    })
-  }
-
-  sendUpdateAttachments(ts, channelId, attachments, options) {
-    return Promise.fromCallback(cb => {
-      //TODO
-    })
-  }
-
-  sendReaction(name, options) {
-    return Promise.fromCallback(cb => {
-      //TODO
-    })
-  }
-
-  sendRemoveReaction(name, options) {
-    return Promise.fromCallback(cb => {
-      //TODO
     })
   }
 
@@ -159,7 +123,6 @@ class RocketChat {
   async disconnect() {
     await driver.disconnect()
   }
-
 }
 
 module.exports = RocketChat

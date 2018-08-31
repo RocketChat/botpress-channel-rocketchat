@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+const { driver } = require('@rocket.chat/sdk')
 
 const create = obj => {
   let resolve = null
@@ -10,34 +11,32 @@ const create = obj => {
 
   const messageId = new Date().toISOString() + Math.random()
 
-  const newEvent = Object.assign({
-    _promise: promise,
-    _resolve: resolve,
-    _reject: reject,
-    __id: messageId
-  }, obj)
+  const newEvent = Object.assign(
+    {
+      _promise: promise,
+      _resolve: resolve,
+      _reject: reject,
+      __id: messageId
+    },
+    obj
+  )
 
   return newEvent
 }
 
-// TODO
-const validateChannelId = (channelId) => {
-}
-
-const validateText = (text) => {
-  if (typeof (text) !== 'string') {
+const validateText = text => {
+  if (typeof text !== 'string') {
     throw new Error('Text must be a string.')
   }
 }
 
-const validateAttachments = (attachments) => {
-  if (typeof (attachments) !== 'object') {
+const validateAttachments = attachments => {
+  if (typeof attachments !== 'object') {
     throw new Error('Expected attachments type to be an object')
   }
 }
 
 const createText = (channelId, text, options = {}) => {
-  validateChannelId(channelId)
   validateText(text)
   return create({
     platform: 'rocketchat',
@@ -51,7 +50,6 @@ const createText = (channelId, text, options = {}) => {
 }
 
 const createAttachments = (channelId, attachments, options = {}) => {
-  validateChannelId(channelId)
   validateAttachments(attachments)
 
   return create({
@@ -79,50 +77,6 @@ const createReaction = (name, options = {}) => {
 }
 
 // TODO
-const createUpdateText = (ts, channelId, text, options = {}) => {
-  validateChannelId(channelId)
-  validateText(text)
-
-  // return create({
-  //   platform: 'rocketchat',
-  //   type: 'update_text',
-  //   text: text,
-  //   raw: {
-  //     channelId: channelId,
-  //     ts: ts,
-  //     options: options
-  //   }
-  // })
-}
-
-// TODO
-const createUpdateAttachments = (ts, channelId, attachments, options = {}) => {
-  validateChannelId(channelId)
-  validateAttachments(attachments)
-
-  // return create({
-  //   platform: 'rocketchat',
-  //   type: 'update_attachments',
-  //   text: 'App updated an attachments',
-  //   raw: {
-  //     channelId: channelId,
-  //     attachments: attachments,
-  //     ts: ts,
-  //     options: options
-  //   }
-  // })
-}
-
-// TODO
-const createDeleteTextOrAttachments = (ts, channelId, options = {}) => {
-  validateChannelId(channelId)
-}
-
-// TODO
-const createRemoveReaction = (name, options = {}) => {
-}
-
-// TODO
 const livechatTransfer = (name, options = {}) => {
   return create({
     platform: 'rocketchat',
@@ -143,10 +97,6 @@ module.exports = {
   createText,
   createAttachments,
   createReaction,
-  createUpdateText,
-  createUpdateAttachments,
-  createDeleteTextOrAttachments,
-  createRemoveReaction,
   livechatTransfer,
-  callMethod,
+  callMethod
 }
