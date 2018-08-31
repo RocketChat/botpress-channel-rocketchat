@@ -24,11 +24,11 @@ npm install botpress-channel-rocketchat
 
 ```json
 {
-    "username": "botpress",
-    "password": "botpress",
-    "hostname": "http://localhost:3000",
-    "useSSL": "false",
-    "subscribeTo": "GENERAL",
+    "ROCKETCHAT_USER": "botpress",
+    "ROCKETCHAT_PASSWORD": "botpress",
+    "ROCKETCHAT_URL": "http://localhost:3000",
+    "ROCKETCHAT_USE_SSL": "false",
+    "ROCKETCHAT_ROOM": "GENERAL",
     "scope": ""
 }
 ```

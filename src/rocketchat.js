@@ -17,12 +17,12 @@ class RocketChat {
     try {
       // make the connection with RocketChat
       var useSSL = true
-      if (this.config.useSSL === "false") {
+      if (this.config.ROCKETCHAT_USE_SSL === "false") {
         var useSSL = false
       }
-      await driver.connect({ host: this.config.hostname, useSsl: useSSL })
-      await driver.login({ username: this.config.username, password: this.config.password })
-      await driver.joinRooms(this.config.subscribeTo.split(','))
+      await driver.connect({ host: this.config.ROCKETCHAT_URL, useSsl: useSSL })
+      await driver.login({ username: this.config.ROCKETCHAT_USER, password: this.config.ROCKETCHAT_PASSWORD})
+      await driver.joinRooms(this.config.ROCKETCHAT_ROOM.split(','))
       await driver.subscribeToMessages()
       this.connected = true
     } catch (error) {

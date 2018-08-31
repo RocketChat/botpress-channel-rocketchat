@@ -20,11 +20,11 @@ const outgoingMiddleware = async (event, next) => {
 
 module.exports = {
   config: {
-    username: { type: 'string', default: '', env: 'ROCKETCHAT_USERNAME' },
-    password: { type: 'string', default: '', env: 'ROCKETCHAT_PASSWORD' },
-    hostname: { type: 'string', default: '', env: 'ROCKETCHAT_HOST' },
-    useSSL: { type: 'string', default: '', env: 'ROCKETCHAT_USESSL' },
-    subscribeTo: { type: 'string', default: '', env: 'ROCKETCHAT_SUBSCRIBETO' },
+    ROCKETCHAT_USER: { type: 'string', default: '', env: 'ROCKETCHAT_USERNAME' },
+    ROCKETCHAT_PASSWORD: { type: 'string', default: '', env: 'ROCKETCHAT_PASSWORD' },
+    ROCKETCHAT_URL: { type: 'string', default: '', env: 'ROCKETCHAT_HOST' },
+    ROCKETCHAT_USE_SSL: { type: 'string', default: '', env: 'ROCKETCHAT_USESSL' },
+    ROCKETCHAT_ROOM: { type: 'string', default: '', env: 'ROCKETCHAT_SUBSCRIBETO' },
     scope: {
       type: 'string',
       default: 'admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read',
