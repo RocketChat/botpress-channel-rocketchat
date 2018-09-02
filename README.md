@@ -6,7 +6,15 @@ Official Rocket.Chat connector module for [Botpress](http://github.com/botpress/
 
 This module has been build to accelerate and facilitate development of Rocket.Chat bots.
 
+This module is tested and working using version `10.34.0` of **botpress**.
+
 ## Installation
+
+* Create a new botpress bot:
+
+```sh
+botpress start
+```
 
 * Install your bot dependencies:
 

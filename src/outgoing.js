@@ -1,7 +1,7 @@
 const handlePromise = (event, next, promise) => {
   return promise
     .then(res => {
-      console.log('WE ARE GOING NEXT PROMISE')
+      //console.log('WE ARE GOING NEXT PROMISE')
       next()
       event._resolve && event._resolve()
       return res

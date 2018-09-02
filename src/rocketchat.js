@@ -91,16 +91,12 @@ class RocketChat {
     const username = event.raw.options.user.username
     if (messageType !== undefined) {
       if (messageType == 'c') {
-        console.log('CHANNEL')
         return driver.sendToRoomId(text, channelId)
       } else if (messageType == 'p') {
-        console.log('PRIVATE')
         return driver.sendToRoomId(text, channelId)
       } else if (messageType == 'd') {
-        console.log('DIRECT')
         return driver.sendDirectToUser(text, username)
       } else if (messageType == 'l') {
-        console.log('LIVECHAT')
         return driver.sendToRoomId(text, channelId)
       } else {
         console.log('ERROR WHILE SENDING MESSAGE')
