@@ -22,11 +22,13 @@
   },
   "author": "Diego Dorgam",
   "license": "AGPL-3.0",
+  "peerDependencies": {
+    "botpress": ">= 10.0.0"
+  },
   "dependencies": {
     "@rocket.chat/sdk": "^0.2.1",
     "babel-cli": "^6.26.0",
     "bluebird": "^3.5.1",
-    "botpress": "^10.28.0",
     "botpress-version-manager": "^1.0.4"
   },
   "devDependencies": {
