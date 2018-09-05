@@ -12,17 +12,33 @@ class RocketChat {
   }
 
   async connect() {
+    function handleChannel(channelList) {
+      if (channelList !== undefined) {
+        channelList = channelList.replace(/[^\w\,._]/gi, '').toLowerCase()
+        if (channelList.match(',')) {
+          channelList = (channelList.split(','))
+        } else if (channelList !== "") {
+          channelList = [channelList]
+        } else {
+          channelList = []
+        }
+      }
+
+      return channelList
+    }
+
     try {
       const useSSL = this.config.ROCKETCHAT_USE_SSL === 'true'
       await driver.connect({ host: this.config.ROCKETCHAT_URL, useSsl: useSSL })
       await driver.login({ username: this.config.ROCKETCHAT_USER, password: this.config.ROCKETCHAT_PASSWORD })
-      await driver.joinRooms(this.config.ROCKETCHAT_ROOM.split(','))
+      await driver.joinRooms(handleChannel(this.config.ROCKETCHAT_ROOM))
       await driver.subscribeToMessages()
       this.connected = true
     } catch (error) {
       console.log(error)
     }
   }
+
 
   async listen(bp) {
     // Insert new user to db
