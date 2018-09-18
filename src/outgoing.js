@@ -22,9 +22,24 @@ const handleText = (event, next, rocketchat) => {
   const text = event.text;
   const options = {};
 
-  return handlePromise(event, next, rocketchat.sendText(text, options, event));
+  return handlePromise(event, next, rocketchat.sendMessage(text, options, event));
+};
+
+const handleAttachments = (event, next, rocketchat) => {
+  if (event.platform !== "rocketchat" || event.type !== "attachments") {
+    return next();
+  }
+
+  //console.log("HANDLE TEXT")
+  const msg = {
+    attachments: event.raw.attachments || []
+  }
+  const options = {};
+
+  return handlePromise(event, next, rocketchat.sendMessage(msg, options, event));
 };
 
 module.exports = {
-  text: handleText
+  text: handleText,
+  attachments: handleAttachments
 };
