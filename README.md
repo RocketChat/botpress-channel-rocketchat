@@ -2,21 +2,58 @@
 
 ![botpress-rocketchat](https://github.com/RocketChat/botpress-channel-rocketchat/wiki/images/botpress.gif)
 
-Official Facebook Rocket.Chat connector module for [Botpress](http://github.com/botpress/botpress).
+Official Rocket.Chat connector module for [Botpress](http://github.com/botpress/botpress).
 
 This module has been build to accelerate and facilitate development of Rocket.Chat bots.
 
+This module is tested and working using version `10.34.0` of **botpress**.
+
 ## Installation
 
-To install this module just run:
+* Create a new botpress bot:
+
+```sh
+botpress init 
+```
+
+* Install your bot dependencies:
+
+```sh
+npm install
+```
+
+* Install this module:
 
 ```sh
 npm install botpress-channel-rocketchat
 ```
 
+* Update the file `config/channel-rocketchat.json` with your bot data:
+
+```json
+{
+    "ROCKETCHAT_USER": "botpress",
+    "ROCKETCHAT_PASSWORD": "botpress",
+    "ROCKETCHAT_URL": "http://localhost:3001",
+    "ROCKETCHAT_USE_SSL": "false",
+    "ROCKETCHAT_ROOM": "GENERAL",
+    "scope": ""
+}
+```
+
+* Start your bot.
+
+```sh
+botpress start
+```
+
 ## Get started
 
 To setup connexion of your chatbot to Rocket.Chat follow this steps:
+
+* Follow the Rocket.Chat Deployment documentation:
+
+[Deployment](https://github.com/RocketChat/Rocket.Chat#deployment)
 
 * If you are in a development environment up a docker instance of Rocket.Chat,
 see how to make it in our example repository:

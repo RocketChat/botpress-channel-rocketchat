@@ -1,6 +1,6 @@
 {
   "name": "botpress-channel-rocketchat",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "description": "Channel connector for rocketchat",
   "main": "bin/node.bundle.js",
   "repository": "https://github.com/RocketChat/botpress-channel-rocketchat.git",
@@ -29,7 +29,6 @@
     "@rocket.chat/sdk": "^0.2.1",
     "babel-cli": "^6.26.0",
     "bluebird": "^3.5.1",
-    "botpress": "^10.28.0",
     "botpress-version-manager": "^1.0.4"
   },
   "devDependencies": {
