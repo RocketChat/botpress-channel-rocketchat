@@ -23,23 +23,23 @@ module.exports = {
     ROCKETCHAT_USER: {
       type: "string",
       default: "",
-      env: "ROCKETCHAT_USERNAME"
+      env: "ROCKETCHAT_USER"
     },
     ROCKETCHAT_PASSWORD: {
       type: "string",
       default: "",
       env: "ROCKETCHAT_PASSWORD"
     },
-    ROCKETCHAT_URL: { type: "string", default: "", env: "ROCKETCHAT_HOST" },
+    ROCKETCHAT_URL: { type: "string", default: "", env: "ROCKETCHAT_URL" },
     ROCKETCHAT_USE_SSL: {
       type: "string",
       default: "",
-      env: "ROCKETCHAT_USESSL"
+      env: "ROCKETCHAT_USE_SSL"
     },
     ROCKETCHAT_ROOM: {
       type: "string",
       default: "",
-      env: "ROCKETCHAT_SUBSCRIBETO"
+      env: "ROCKETCHAT_ROOM"
     },
     scope: {
       type: "string",
