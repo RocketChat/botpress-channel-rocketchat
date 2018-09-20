@@ -85,7 +85,7 @@ You can listen to incoming event easily with Botpress by using `bp` built-in `he
 
 ```js
 bp.hear({platform:'rocketchat', type: 'message', text:'hello'}, async (event, next) => {
-  await bp.rocketchat.sendText(event.channel, 'Hi I\'m alive', {})
+  await bp.rocketchat.sendMessage(event.channel, 'Hi I\'m alive', {})
   next()
 })
 ```
@@ -151,17 +151,17 @@ bp.hear('hello')
 
 ### Outgoing
 
-By using our module, you can send any text you want to your users on Rocket.Chat.
+By using our module, you can send any text or attachment you want to your users on Rocket.Chat.
 
 ### Text messages
 
 In code, it is simple to send a message text to a specific users or channels.
 
-#### `sendText(text, options, event)` -> Promise
+#### `sendMessage(msg, options, event)` -> Promise
 
 ##### Arguments
 
-1. ` text ` (_String_): Text message that will be send to user.
+1. ` msg ` (_String_ / _Object_): Message that will be send to user.
 
 2. ` options ` (_Object_): Needed options.
 
