@@ -106,19 +106,19 @@ class RocketChat {
     this.config = config;
   }
 
-  sendText(text, options, event) {
+  sendMessage(msg, options, event) {
     const messageType = event.raw.options.roomType;
     const channelId = event.raw.channelId;
     const username = event.raw.options.user.username;
     if (messageType !== undefined) {
       if (messageType == "c") {
-        return driver.sendToRoomId(text, channelId);
+        return driver.sendToRoomId(msg, channelId);
       } else if (messageType == "p") {
-        return driver.sendToRoomId(text, channelId);
+        return driver.sendToRoomId(msg, channelId);
       } else if (messageType == "d") {
-        return driver.sendDirectToUser(text, username);
+        return driver.sendDirectToUser(msg, username);
       } else if (messageType == "l") {
-        return driver.sendToRoomId(text, channelId);
+        return driver.sendToRoomId(msg, channelId);
       } else {
         console.log("ERROR WHILE SENDING MESSAGE");
       }
