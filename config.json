@@ -1,7 +1,7 @@
 {
     "ROCKETCHAT_USER": "botpress",
     "ROCKETCHAT_PASSWORD": "botpress",
-    "ROCKETCHAT_URL": "http://localhost:3001",
+    "ROCKETCHAT_URL": "http://localhost:3000",
     "ROCKETCHAT_USE_SSL": "false",
     "ROCKETCHAT_ROOM": "GENERAL",
     "scope": "admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read"
