@@ -43,13 +43,12 @@ module.exports = {
     },
     scope: {
       type: "string",
-      default:
-        "admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read",
+      default: "admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read",
       env: "ROCKETCHAT_SCOPE"
     }
   },
 
-  init(bp) {
+  init: async (bp, configurator, helpers) => {
     bp.middlewares.register({
       name: "rocketchat.sendMessages",
       type: "outgoing",
@@ -71,7 +70,7 @@ module.exports = {
     UMM(bp);
   },
 
-  ready: async function(bp, configurator) {
+  ready: async (bp, configurator, helpers) => {
     const config = await configurator.loadAll();
 
     rocketchat = new RocketChat(bp, config);
