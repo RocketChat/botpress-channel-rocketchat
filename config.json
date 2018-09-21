@@ -4,5 +4,5 @@
     "ROCKETCHAT_URL": "http://localhost:3001",
     "ROCKETCHAT_USE_SSL": "false",
     "ROCKETCHAT_ROOM": "GENERAL",
-    "scope": ""
+    "scope": "admin,bot,chat:write:bot,commands,identify,incoming-webhook,channels:read"
 }
