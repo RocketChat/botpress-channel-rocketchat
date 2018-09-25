@@ -1,5 +1,5 @@
 {
-  "name": "botpress-channel-rocketchat",
+  "name": "@rocket.chat/botpress-channel-rocketchat",
   "version": "0.0.14",
   "description": "Channel connector for rocketchat",
   "main": "bin/node.bundle.js",
